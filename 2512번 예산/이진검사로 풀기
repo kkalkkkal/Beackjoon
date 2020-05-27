@@ -1,0 +1,54 @@
+#include<stdio.h>
+#include<algorithm>
+using namespace std;
+int budget[10010];//예산 신청을 받는다.
+int main(void)
+{
+    int people,bank,i,sum=0,left,right,middle,answer;
+    scanf("%d",&people);//지방의 수
+    for(i=1; i<=people; i++)
+    {
+        scanf("%d",&budget[i]);//각 지방별 예산 요구
+        sum+=budget[i];//지금까지의 예산 합계
+    }
+    sort(budget+1,budget+people+1);//예산을 정렬한다.
+    scanf("%d",&bank);//총 예산
+    if(sum<=bank)//만일 예산 요구 합이 총 예산보다 작을 경우, 모든 요구를 들을 수 있다.
+    {
+        printf("%d",budget[people]);//가장 큰 예산을 출력한다.
+    }
+    else//모든 요구를 들어줄 수 없는 경우
+    {
+        left=0;
+        right=bank;
+        while(left<=right)//0~총 예산 범위 사이에서 이진 검색을 실시한다.
+        {
+            sum=0;
+            middle=(left+right)/2;//좌 우 범위의 중앙값을 임시 답안으로 삼는다.
+            for(i=1; i<=people; i++)//예산 배정 규칙에 맞추어 예산을 배정한다.
+            {
+                if(middle<budget[i])
+                {
+                    sum+=middle;
+                }
+                else
+                {
+                    sum+=budget[i];
+                }
+            }
+            if(sum<=bank)//만일 이렇게 배정이 가능하면
+            {
+                answer=middle;//이를 임시 답안으로 삼고
+                left=middle+1;//좌 범위를 반으로 줄인다.
+            }
+            else//배정이 불가능하면
+            {
+                right=middle-1;//우 범위를 반으로 줄인다.
+            }
+        }
+        printf("%d",answer);//수렴된 최종 답안을 출력한다.
+    }
+    return 0;
+}
+
+/*이진 검색은 시간 복잡도가 log(2,n)이므로, 단순히 일차원적 검색을 할 때보다 시간을 아주 많이 줄일 수 있다.*/
