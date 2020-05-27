@@ -1,0 +1,56 @@
+/#include <iostream>
+/#include <queue>
+using namespace std;
+int main() {
+	int max=0; // 최대 배정된 예싼
+	int cnt;  // 인원수
+	int budget;  // 예산
+	queue<int> q; // 큐
+	queue<int> tempQ; // 임시큐
+	cin >> cnt;
+	for(int i=0; i<cnt; i++){
+		int tmp;
+		cin >> tmp;
+		q.push(tmp);
+	}
+	cin >> budget;
+	while(1){
+		int budgetCpy = budget;
+		int cntCpy = cnt;
+		int tooManyFlag=1; // queue에 남은 모든 예산이 평균보다 클 경우
+		while(!q.empty()){
+			int tmp = q.front();
+			q.pop();
+			if(tmp <= (budgetCpy-budgetCpy%cntCpy)/cntCpy){
+                // ﻿"총 예산 / 인원수" 보다 작은 tmp 값
+				budget -= tmp;
+				cnt--;
+				tooManyFlag=0;
+				max = max > tmp ? max : tmp;
+			}
+			else{
+                // ﻿"총 예산 / 인원수" 보다 큰 tmp 값
+				tempQ.push(tmp); // 할당없이 임시에 넣어줌
+			}
+		}
+		if(tooManyFlag==1){
+            //큐에있는 모든 값이  ﻿"총 예산 / 인원수" 보다 커서 할당이 안될때
+			max = max > (budgetCpy-budgetCpy%cntCpy)/cntCpy ? max : (budgetCpy-budgetCpy%cntCpy)/cntCpy; // 남은거 n빵
+			break;
+		}
+		if(cnt==0){
+            //큐가 비어있음 ( = 할당 모두 완료함 )
+			break;
+		}
+		else{
+            // 위에 2개 해당 안되면 임시 큐에있는거 다시 다 큐에 넣고 반복 ㄱㄱ
+			while(!tempQ.empty()){
+				int tmp = tempQ.front();
+				tempQ.pop();
+				q.push(tmp);
+			}
+		}
+	}
+	cout << max;	
+	return 0;
+}
