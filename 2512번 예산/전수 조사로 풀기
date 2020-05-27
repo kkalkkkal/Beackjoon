@@ -1,0 +1,39 @@
+#include<iostream>
+using namespace std;
+
+int main(void) {
+	int totalNum;
+	cin >> totalNum;
+	int cost[10001];
+	for (int i = 0; i < totalNum; i++) {
+		cin >> cost[i];
+	}
+	int max;
+	cin >> max;
+	int maxCost = 0, totalCost =0;
+	for (int i = 0; i < totalNum; i++) {
+		if (maxCost < cost[i]) {
+			maxCost = cost[i];
+		}
+		totalCost += cost[i];
+	}
+	if (totalCost <= max) {
+		cout << maxCost << endl;
+		return 0;
+	}
+	int calCost=0, cur = maxCost;
+	do {
+		calCost = 0;
+		cur--;
+		for (int i = 0; i < totalNum; i++) {
+			if (cost[i] > cur) {
+				calCost += cur;
+			}
+			else {
+				calCost += cost[i];
+			}
+		}
+	} while (calCost > max);
+	cout << cur << endl;
+	return 0;
+}
