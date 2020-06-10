@@ -47,7 +47,7 @@ void func(int chicken,int target,int x,int y)//전체 치킨집 중 target개만
 /*순서를 생각하지 않으므로 번호 순서대로 치킨집을 뽑아야 한다.*/
 {
     int i;
-    if(x>target)//target만큼 치킨집을 선택하면
+    if(x>target)//target만큼 치킨집을 선택하면.
     {
         clear();//새로운 계산을 위해 sum을 초기화한다.
         calculate();//'치킨 거리'를 계산한다.
