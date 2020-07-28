@@ -21,7 +21,7 @@ int calculate(int a, int b) {
 
 int main(void)
 {
-
+ 
 
     cin >> A >> B;
     
