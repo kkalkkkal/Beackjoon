@@ -1,0 +1,66 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define INF 2100000000
+int main(void)
+{
+    int num,i,j,now,tmp;
+    int left,right,middle,target;//가장 가까운 값 찾기
+    int a_size=0,b_size=0;
+    int acid[100010]={0};
+    int base[100010]={0};
+    int answer1,answer2,min=INF;
+    scanf("%d",&num);//시약병의 수를 입력받는다
+    for(i=1; i<=num; i++)
+    {
+        scanf("%d",&tmp);//시약을 입력받는다
+        if(tmp<0)//염기성 용액과 산성 용액으로 분류한다. 염기성은 여기로
+        {
+            b_size++;
+            base[b_size]=tmp;
+        }
+        else//산성은 여기로
+        {
+            a_size++;
+            acid[a_size]=tmp;
+        }
+    }
+    if(a_size>=2 && abs(acid[1]+acid[2])<min)//먼저 산성 두 개를 합쳐본다.
+    {
+        min=abs(acid[1]+acid[2]);
+        answer1=acid[1];
+        answer2=acid[2];
+    }
+    if(b_size>=2 && abs(base[b_size-1]+base[b_size])<min)//염기성 두 개도 합쳐본다.
+    {
+        min=abs(base[b_size-1]+base[b_size]);
+        answer1=base[b_size-1];
+        answer2=base[b_size];
+    }
+    for(i=1; i<=b_size; i++)//산성과 염기성을 섞어본다.
+    {
+        left=1;
+        right=a_size;//이진 탐색
+        while(left<=right)
+        {
+            middle=(left+right)/2;
+            tmp=base[i]+acid[middle];//현재 시약의 혼합 농도. 0에 가까운 값을 찾아야 한다.
+            now=abs(tmp);//중성에 가까운 정도.
+            if(now<min)//0에 더 가까운 조합을 찾았다면
+            {
+                min=now;
+                answer1=base[i];
+                answer2=acid[middle];
+            }
+            if(tmp<0)//혼합 용액이 알칼리성이면
+            {
+                left=middle+1;
+            }
+            else//혼합 용액이 산성이면
+            {
+                right=middle-1;
+            }
+        }
+    }
+    printf("%d %d",answer1,answer2);//최종 정답을 출력한다.
+    return 0;
+}
