@@ -1,0 +1,34 @@
+#include<stdio.h>
+#include<vector>
+#include<queue>
+using namespace std;
+priority_queue<long long,vector<long long>,greater<long long> > Q;//문제 풀이의 핵심.
+int main(void)
+{
+    int test,k,i;
+    int num;
+    long long book,min1,min2,answer;
+    scanf("%d",&test);//테스트 케이스의 수를 입력받는다.
+    for(k=1; k<=test; k++)
+    {
+        answer=0;
+        scanf("%d",&num);//파일의 수를 입력받는다.
+        for(i=1; i<=num; i++)
+        {
+            scanf("%lld",&book);//파일의 크기를 입력받는다.
+            Q.push(book);//우선순위 큐에 해당 파일을 넣어준다.
+        }
+        while(Q.size()>=2)
+        {
+            min1=Q.top();
+            Q.pop();
+            min2=Q.top();
+            Q.pop();//가장 작은거 두 개를 뺸다.
+            answer+=(min1+min2);//합친다.
+            Q.push(min1+min2);//다시 집어넣는다.
+        }
+        printf("%lld\n",answer);//최종 정답을 출력한다.
+        Q.pop();
+    }
+    return 0;
+}
