@@ -1,0 +1,103 @@
+#include<stdio.h>
+#include<queue>
+#define INF 10000000
+using namespace std;
+queue<int> Q;
+int map[25][25];
+int chart[25][25];
+int imove[4]={-1,0,1,0};
+int jmove[4]={0,1,0,-1};
+void clear(void);
+int range(int width,int x,int y);
+int main(void)
+{
+    int width,i,j,answer=0,level=2,eat=0;
+    int min,ii,jj,ti,tj,si,sj;
+    scanf("%d",&width);//바다의 크기를 입력받는다.
+    for(i=1; i<=width; i++)
+    {
+        for(j=1; j<=width; j++)
+        {
+            scanf("%d",&map[i][j]);//물고기들의 정보를 입력받는다.
+            if(map[i][j]==9)//아기 상어가 처음에 있는 장소를 저장한다.
+            {
+                si=i;
+                sj=j;
+                map[i][j]=0;
+            }
+        }
+    }
+    while(1)
+    {
+        clear();//아기 상어의 이동 지도를 초기화한다.
+        chart[si][sj]=0;//처음에 아기 상어를 배치한다.
+        Q.push(si);
+        Q.push(sj);
+        while(!Q.empty())//아기 상어가 갈 수 있는 모든 곳의 거리를 기록한다.
+        {
+            ii=Q.front();
+            Q.pop();
+            jj=Q.front();
+            Q.pop();
+            for(i=0; i<=3; i++)
+            {
+                ti=ii+imove[i];
+                tj=jj+jmove[i];
+                if(range(width,ti,tj)==1 && map[ti][tj]<=level && chart[ti][tj]>chart[ii][jj]+1)
+                {
+                    Q.push(ti);
+                    Q.push(tj);
+                    chart[ti][tj]=chart[ii][jj]+1;
+                }
+            }
+        }
+        min=INF;
+        for(i=1; i<=width; i++)
+        {
+            for(j=1; j<=width; j++)
+            {
+                if(min>chart[i][j] && map[i][j]!=0 && map[i][j]<level)//문제 조건에 맞게 가장 가까이 있는 물고기를 먹으러 간다.
+                {
+                    min=chart[i][j];
+                    ti=i;
+                    tj=j;
+                }
+            }
+        }
+        if(min==INF)//더 이상 먹을 물고기가 없다면 엄마 상어에게 도움을 요청한다.
+        {
+            break;
+        }
+        answer+=min;//있으면 그 물고기를 먹으러 이동한다. 그동안 시간이 누계된다.
+        eat++;//한 마리를 먹는다.
+        map[ti][tj]=0;//먹은 물고기는 치운다.
+        si=ti;//아기 상어를 해당 물고기가 있는 위치로 옮긴다.
+        sj=tj;
+        if(eat==level)//만일 자기 레벨만큼 물고기를 먹었으면
+        {
+            level++;//아기 상어의 레벨을 올린다.
+            eat=0;//아기 상어의 배를 비워준다.
+        }
+    }
+    printf("%d",answer);//최종 정답을 출력한다.
+    return 0;
+}
+void clear(void)//BFS 배열 초기화
+{
+    int i,j;
+    for(i=1; i<=23; i++)
+    {
+        for(j=1; j<=23; j++)
+        {
+            chart[i][j]=INF;
+        }
+    }
+}
+int range(int width,int x,int y)//아기 상어가 올바른 범위 안에 있는지
+{
+    if((x>=1 && x<=width) && (y>=1 && y<=width))
+    {
+        return 1;
+    }
+    return 0;
+}
