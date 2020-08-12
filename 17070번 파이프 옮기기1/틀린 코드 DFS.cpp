@@ -53,7 +53,7 @@ int DFS(int x, int y, int dir)
         {
             return 0; // 길이 없으니 0 리턴
         }
-        else if (ny == N - 1 && nx == N - 1)
+        else if (ny == N - 1 && nx == N - 1) 
         {
             return 1;
         }
@@ -61,7 +61,7 @@ int DFS(int x, int y, int dir)
 
     // 위 조건문을 빠져나왔다는 것은 이동 가능한 모든 경우의 수에서 계속 진행 가능하단 것이다.
 
-
+    
     if (dir == 0) // 가로 상태일 경우
     {
         dp[dir][y][x] += DFS(x + dx[dir], y + dy[dir], 0); // 가로 이동
@@ -98,7 +98,7 @@ int main(void)
         {
             std::cin >> pipe[i][j];
         }
-
+        
     }
 
     // (1,1), (1,2)는 항상 빈칸
@@ -106,7 +106,7 @@ int main(void)
 
 
 
-    int ans = DFS(1, 1, 0);
+    int ans = DFS(1,2,0);
 
 
     printf("%d\n", ans);
