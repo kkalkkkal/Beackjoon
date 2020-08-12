@@ -1,0 +1,51 @@
+/*여러 최단 경로를 찾는 다익스트라-힙 알고리즘*/
+#include<stdio.h>
+#include<vector>
+#include<queue>
+#include<utility>
+using namespace std;
+typedef pair<int,int> PP;//현재까지의 이동 거리,현재 서있는 정점을 저장하는 pair.
+priority_queue<PP,vector<PP>,greater<PP> > Q;//이 문제의 핵심.
+priority_queue<int,vector<int>,less<int> > answer[1010];//정답을 출력하는 큐.
+vector<PP> map[1010];//길의 정보를 입력받는다.
+int main(void)
+{
+    int city,lines,target,i,j,roll;
+    int si,gi,length,now_length,now_city,next_length,next_city;
+    scanf("%d %d %d",&city,&lines,&target);//도시의 개수와 도로의 개수,몇 번쨰 최단경로를 찾을 지 정한다.
+    for(i=1; i<=lines; i++)
+    {
+        scanf("%d %d %d",&si,&gi,&length);//도로의 정보를 입력받는다.
+        map[si].push_back(make_pair(gi,length));
+    }
+    Q.push(make_pair(0,1));//현재 거리,현재 정점 순으로 큐에 넣는다. 처음엔 0부터 시작한다.
+    answer[1].push(0);//시작 정점의 최단거리는 0이다.
+    while(!Q.empty())
+    {
+        now_length=Q.top().first;//현재까지의 이동거리와 현재 정점을 저장한다.
+        now_city=Q.top().second;
+        Q.pop();
+        roll=map[now_city].size();
+        for(i=0; i<roll; i++)//현재 정점으로부터 이어진 길들을 조사한다.
+        {
+            next_length=now_length+map[now_city][i].second;//다음 이동거리와 다음 정점을 저장한다.
+            next_city=map[now_city][i].first;
+            if(answer[next_city].size()<target)//만일 k번쨰 최단거리까지 다 구해지지 않았다면
+            {
+                answer[next_city].push(next_length);//정답 큐에 그대로 넣어준다.
+                Q.push(make_pair(next_length,next_city));
+            }
+            else if(answer[next_city].top()>next_length)//만일 정답 큐가 가득 찼고, 더 짧은 길이 발견되었다면
+            {
+                answer[next_city].pop();//이전에 구한 값들 중 가장 높은 것만 교체한다.
+                answer[next_city].push(next_length);
+                Q.push(make_pair(next_length,next_city));
+            }
+        }
+    }
+    for(i=1; i<=city; i++)
+    {//하나씩 정답을 출력한다. 단 정답 큐의 크기가 k가 아니라면 그건 해당 정점까지는 k번째 최단경로가 없는 것이다.
+        (answer[i].size()==target) ? printf("%d\n",answer[i].top()) : printf("-1\n");
+    }
+    return 0;
+}
