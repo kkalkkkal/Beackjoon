@@ -1,0 +1,107 @@
+#include<iostream>
+#include<queue>
+using namespace std;
+int n;
+int map[21][21];
+int check[21][21];
+pair<int, int> shark;
+int Ssize;
+pair<int, int> fish;
+int dr[4] = { -1, 0, 0, 1 };
+int dc[4] = { 0, -1, 1, 0 };
+int answer = 0;
+int find(int sr, int sc) {
+	queue<pair<int, int>> q;
+	q.push(make_pair(sr, sc));
+	while (!q.empty()) {
+		int r = q.front().first;
+		int c = q.front().second;
+		q.pop();
+		
+		for (int i = 0; i < 4; i++) {
+			int curR = r + dr[i];
+			int curC = c + dc[i];
+			if (curR >= 0 && curR < n&&curC >= 0 && curC < n && !(curR == sr && curC == sc)) {
+				if (check[curR][curC] == 0) {
+					cout << "확인 : " << curR << " : " << curC << endl;
+					if (map[curR][curC] > 0 && map[curR][curC] < 9) {
+						if (map[curR][curC] <= Ssize) {//먹을 수 있는 물고기
+							cout << "물고기 : " << curR << " : "<<curC << endl;
+							fish.first = curR;
+							fish.second = curC;
+							for (int i = 0; i < n; i++) {
+								for (int j = 0; j < n; j++) {
+									cout << check[i][j];
+								}
+								cout << endl;
+							}
+							return check[r][c] + 1;
+						}
+						else {//못지나가는 경우
+							check[curR][curC] = check[r][c] + 1;
+							continue;
+						}
+					}
+					else {//빈공간인 경우
+						check[curR][curC] = check[r][c] + 1;
+						q.push(make_pair(curR, curC));
+						continue;
+					}
+
+				}
+			}
+		}
+	}
+	return 0;
+
+}
+int main(void) {
+	Ssize = 2;
+	int count = 0;//물고기를 몇 번 먹었는지
+	cin >> n;
+	int temp;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			cin >> temp;
+			map[i][j] = temp;
+			if (temp == 9) {
+				shark = make_pair(i, j);
+			}
+
+		}
+	}
+	//cout << "상어 : " << shark.first << " : " << shark.second << endl;
+	while (true) {
+		fish.first = -1;
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				check[i][j] = 0;
+			}
+		}
+		int flag = find(shark.first, shark.second);
+		if (flag > 0) {//먹을 수 있는 물고기 찾은 경우
+			//cout << "현재 위치 : " << fish.first << " : " << fish.second << endl;
+			answer += flag;
+			map[shark.first][shark.second] = 0;
+			map[fish.first][fish.second] = 0;
+			shark.first = fish.first;
+			shark.second = fish.second;
+
+			map[shark.first][shark.second] = 9;
+			count++;
+			if (count == Ssize) {
+				Ssize++;
+				count = 0;
+			}
+			cout << "크기 : " << Ssize << endl;
+			cout << answer << endl;
+		}
+		else {
+			break;
+		}
+
+	}
+	cout << answer;
+
+	return 0;
+}
