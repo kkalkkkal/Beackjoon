@@ -1,0 +1,72 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <math.h>
+#include <cstdlib>
+#include <vector>
+#include <bitset>
+
+
+using namespace std;
+
+
+int main(void)
+{
+	int N = 0;
+	vector<int> L1, L2;
+	int L;
+	priority_queue<int, vector<int>, greater<int>> q;
+
+
+	cin >> N;
+
+
+	for (size_t i = 0; i < N; i++)
+	{
+		cin >> L;
+		if (L > 0)
+		{
+			L1.push_back(L); 
+		}
+		else {
+			L2.push_back(L);
+		}
+	}
+
+	// 10만C2의 조합의 가짓수를 줄이는 것이 관건이다.
+	// 0과 가장 가까운 것은 절대값 차이가 적은 +- 조합이다.
+	// 비트연산이 필요한 걸까... 
+	// 음... 두 수의 비트연산으로 0과 가까운 값을 고를 수 있을 것으로 보인다.
+
+	int M = max(L1.size(), L2.size());
+	int m = min(L1.size(), L2.size());
+
+	int min = 20000000;
+	int a;
+
+	for (size_t i = 0; i < m; i++)
+	{
+		for (size_t j = 0; j < m; j++)
+		{
+			a = L1.at(i) ^ abs(L2.at(j)); // 이렇게 하면 1이 하나라도 있으면 1이 반환
+			// 나머지는 0
+
+			if (min > a)
+			{
+				min = a;
+			}
+
+			if (min == 0)
+			{
+				printf("%d %d\n", L2.at(j), L1.at(i)); break;
+
+			}
+
+		}
+	}
+	
+
+
+	return 0;
+
+}
