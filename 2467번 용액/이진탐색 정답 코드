@@ -1,0 +1,34 @@
+#include<iostream>
+using namespace std;
+int n;
+int map[100001];//오름차순
+int main(void) {
+	cin >> n;
+	for (int i = 0; i < n; i++) {
+		cin >> map[i];
+	}
+	int answer = abs(map[0] + map[n - 1]);
+	int l1 = 0, l2 = n - 1;
+	int left = 0, right = n - 1;
+	while (left < right) {
+		int cur = map[left] + map[right];
+		if ( abs(cur) < answer) {
+			answer = abs(cur);
+			l1 = left;
+			l2 = right;
+		}
+		if (cur < 0) {
+			left++;
+		}
+		else if (cur > 0) {
+			right--;
+		}
+		else {
+			break;
+		}
+
+	}
+	cout << map[l1] << " " << map[l2];
+
+	return 0;
+}
