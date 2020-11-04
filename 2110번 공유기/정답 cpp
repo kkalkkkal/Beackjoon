@@ -1,0 +1,35 @@
+#include<iostream>
+#include<algorithm>
+using namespace std;
+int n, c;
+int house[200001];
+int answer = 0;
+int main(void) {
+	cin >> n >> c;
+	for (int i = 0; i < n; i++) {
+		cin >> house[i];
+	}
+	sort(house, house + n);
+	//첫번째 집에는 무조건 공유기 설치한다고 가정
+	int first = 0, last = house[n - 1] - house[0];//간격
+	while (first <= last) {
+		int mid = (first + last) / 2;//간격이 mid이상이 되도록
+		int countH = 1;
+		int prevIndex = 0;
+		for (int i = 1; i < n; i++) {//인덱스
+			if (house[i] - house[prevIndex] >= mid) {
+				countH++;
+				prevIndex = i;
+			}
+		}
+		if (countH >= c) {//공유기 설치가 가능한 경우
+			answer = mid;
+			first = mid + 1;
+		}
+		else {
+			last = mid - 1;
+		}
+	}
+	cout << answer<< '\n';
+	return 0;
+}
