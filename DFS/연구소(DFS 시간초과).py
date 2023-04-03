@@ -51,11 +51,11 @@ def dfs(count):
         for i in range(n):
             for j in range(m):
                 temp[i][j] = data[i][j]
-            # 각 바이러스의 위치에서 전파 진행
-            for i in range(n):
-                for j in range(m):
-                    if temp[i][j] == 2:
-                        virus(i,j)
+        # 각 바이러스의 위치에서 전파 진행
+        for i in range(n):
+            for j in range(m):
+                if temp[i][j] == 2:
+                    virus(i,j)
         # 안전 영역의 최댓값 계산
         result = max(result, get_score())
         return
@@ -73,8 +73,8 @@ def dfs(count):
 
 start_time = time.time()
 
-print(get_score())
-#print(result)
+dfs(0)
+print(result)
 
 end_time = time.time()
 
