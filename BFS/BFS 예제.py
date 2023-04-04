@@ -1,5 +1,6 @@
 from collections import deque
 
+
 def bfs(graph, start, visited):
     #큐(Queue) 구현을 위해 deque 라이브러리를 사용
     queue = deque([start])
