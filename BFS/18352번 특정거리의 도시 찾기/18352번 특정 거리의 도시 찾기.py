@@ -28,7 +28,6 @@ distance = [-1] * (n+1)
 distance[x] = 0
 
 def bfs(city, start, distance) :
-    global answer
     queue = deque([start])
     
     #큐가 빌 때까지 반복
