@@ -16,8 +16,8 @@ q = deque(data)
 
 target_s, target_x, target_y = map(int,input().split())
 
-dx = [-1,0,1,0]
-dy = [0, 1, 0 -1]
+dx = [-1, 0, 1, 0]
+dy = [0, 1, 0, -1]
 
 while q :
     virus, s, x, y = q.popleft()
