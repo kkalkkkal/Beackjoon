@@ -24,13 +24,17 @@ input = sys.stdin.readline
 
 n,k = map(int,input().strip().split())
 graph = []
+q = PriorityQueue() # 증식할 위치를 저장하는 우선순위 큐
+q2 = PriorityQueue()
 
-for _ in range(n):
+for i in range(n):
     graph.append(list(map(int,input().strip().split())))
+    for j in range(n):
+        if graph[i][j] != 0:
+            q.put([graph[i][j],i,j]) # 바이러스 번호와 위치 정보를 적재
 
 s, x, y = map(int, input().strip().split())
 
-temp = []
 
 """
 풀이 전략 
@@ -43,37 +47,27 @@ temp = []
 3. (x,y)에 있는 값 출력
 """
 
+def check(queue, queue2):
+    global graph
+    while queue.empty() == False :
+        v, row, col = queue.get()
+        for dx, dy in [[-1,0],[1,0],[0,-1],[0,1]]:
+            if 0 <= row + dy < n and 0 <= col + dx < n :
+                if graph[row+dy][col+dx] == 0 :
+                    graph[row+dy][col+dx] = v
+                    queue2.put([v,row+dy,col+dx])
+
 
 # 바이러스가 증식하는 함수 
 def virus(s) :
-    q = PriorityQueue() # 증식할 위치를 저장하는 우선순위 큐
-    queue = deque() # 증식한 위치를 저장하는 일반 큐
-    temp = copy.deepcopy(graph)
-
     for _ in range(s):
-        for i in range(n):
-            for j in range(n):
-                if 0 < temp[i][j] <= k:
-                    q.put([temp[i][j],i,j]) # 바이러스 번호와 위치 정보를 적재
+        if q.empty() : 
+            check(q2,q)
+        else :
+            check(q,q2)
 
-        while q.empty() == False :
-            v, row, col = q.get()
-
-            for dx, dy in [[-1,0],[1,0],[0,-1],[0,1]]:
-                if 0 <= row + dy < n and 0 <= col + dx < n :
-                    if temp[row+dy][col+dx] == 0 :
-                        temp[row+dy][col+dx] = v
-                        queue.append([v,row+dy,col+dx])
-
-        # 우선순위 큐가 다 끝나면 queue에 적재된 내용을 다 우선순위 큐에 옮기기
-        while queue:
-            v, row, col = queue.popleft()
-            q.put([v,row, col])
-
-    print(temp[x-1][y-1])
+    print(graph[x-1][y-1])
     return 0
 
 # S초 동안 바이러스 확산시키기
 virus(s)
-
-
