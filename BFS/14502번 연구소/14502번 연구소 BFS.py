@@ -25,7 +25,7 @@ graph = []
 for _ in range(n):
     graph.append(list(map(int, input().strip().split())))
 
-#temp = copy.deepcopy(graph)
+temp = copy.deepcopy(graph)
 
 answer = 0
 
@@ -67,8 +67,8 @@ def set_wall3(count) :
     if count == 3 :
         virus()
         return
-    for i in range(n):
-        for j in range(m) : 
+    for i in range(n) :
+        for j in range(m) :
             if graph[i][j] == 0 :
                 graph[i][j] = 1
                 set_wall3(count+1)
@@ -84,6 +84,11 @@ print(answer)
 """
 풀면서 느낀 점. DFS는 계속 재귀를 하면서 for문을 호출하므로 시간상 불리하여 BFS로 문제를 풀었다.
 하지만 다양한 조합에서 문제를 푸는게 가장 문제였는데 
-조합(combination)을 사용할 때 (i/m, 
+조합(combination)을 사용할 때 (i/m, i%m)으로 모든 조합 좌표를 찾을 수 있다고 한다.
+이거로 시간을 줄일 수 있다곤 하지만
+
+실제로 해본 결과 막 효용성이 있는 것 같진 않다...
+
+pypy3 로하면 통과 되긴 한다.
 
 """
