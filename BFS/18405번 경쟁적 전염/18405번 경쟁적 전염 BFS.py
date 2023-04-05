@@ -17,8 +17,6 @@
 """
 
 from queue import PriorityQueue
-from collections import deque
-import copy
 import sys
 input = sys.stdin.readline
 
@@ -63,8 +61,10 @@ def virus(s) :
     for _ in range(s):
         if q.empty() : 
             check(q2,q)
-        else :
+        elif q2.empty() :
             check(q,q2)
+        else :
+            break
 
     print(graph[x-1][y-1])
     return 0
