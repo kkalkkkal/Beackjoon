@@ -67,7 +67,7 @@ def set_wall3(count) :
     if count == 3 :
         virus()
         return
-    for i in range(0):
+    for i in range(n):
         for j in range(m) : 
             if graph[i][j] == 0 :
                 graph[i][j] = 1
